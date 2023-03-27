@@ -25,11 +25,11 @@ int main( void )
             subscriber.recv( msg );
             std::string message ( (char*) msg->data(), msg->size() );
 
-            int res = message.compare("Nathan>service?>1+1");
+            int result = message.compare("Nathan>service?>1+1");
 
-                if (res == 0)
+                if (result == 0)
                     std::cout << "\nBoth the input strings are equal." << std::endl;
-                else if (res < 0)
+                else if (result < 0)
                     std::cout << "\nString 1 is smaller as compared to String 2." << std::endl;
                 else
                     std::cout << "\nString 1 is greater as compared to String 2." << std::endl;

@@ -20,8 +20,12 @@ private:
     std::string SubscribeTopic = "Nathan>service?>";
     std::string PushTopic = "Nathan>service!>";
     zmq::context_t *context = new zmq::context_t(1);
+       zmq::message_t *zmqBuffer  = new zmq::message_t();
+       zmq::socket_t *pushSocket = new zmq::socket_t(*context, ZMQ_PUSH);
+       zmq::socket_t *subSocket = new zmq::socket_t(*context, ZMQ_SUB);
+    /* zmq::context_t *context = new zmq::context_t(1);
     zmq::socket_t *socket = new zmq::socket_t ( *context, ZMQ_SUB );
-    zmq::socket_t *Push = new zmq::socket_t ( *context, ZMQ_PUSH );
+    zmq::socket_t *Push = new zmq::socket_t ( *context, ZMQ_PUSH ); */
 };
 
 #endif // SERVICE_H

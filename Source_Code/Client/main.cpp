@@ -9,29 +9,10 @@
     #define sleep(n)    Sleep(n)
 #endif
 
+#include "client.h"
+
 int main( void )
 {
-    try
-    {
-        zmq::context_t context(1);
-
-        //Outgoing message go out through here
-        zmq::socket_t ventilator( context, ZMQ_PUSH );
-//		ventilator.connect( "tcp://192.168.1.8:24041" );
-//		ventilator.connect( "tcp://localhost:24041" );
-        ventilator.connect( "tcp://benternet.pxl-ea-ict.be:24041" );
-
-        while( ventilator.connected() )
-        {
-            sleep( 1000 );
-            ventilator.send( "Nathan>service?>1+1", strlen("Nathan>service?>1+1"));
-            std::cout << "Pushed : [ping]" << std::endl;
-        }
-    }
-    catch( zmq::error_t & ex )
-    {
-        std::cerr << "Caught an exception : " << ex.what();
-    }
-
+    Client client;
     return 0;
 }

@@ -39,5 +39,5 @@ The service is subscribed on the topic `Nathan>service?>` and will push to the b
 ## Client
 The client is subscribed on the topic `Nathan>service!>` and will push to the broker on `Nathan>service?>`.
 
-# FlowCharts
+# FlowChart
 ![FlowChart](./Pictures/FlowChart.png)

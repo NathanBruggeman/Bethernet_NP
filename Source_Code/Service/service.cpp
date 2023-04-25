@@ -20,13 +20,11 @@ service::service()
             std::string message ( (char*) zmqBuffer->data(), zmqBuffer->size() );
 
             //Check if the string contains "1+1"
-               if (message.find("1+1") != std::string::npos) {
+              (message.find("1+1") != std::string::npos);
                    std::string buffer = PushTopic;
-                    buffer += "2";
+                    buffer += 2;
                    pushSocket->send(buffer.c_str(), buffer.length());
-               } else {
-                   std::cout << "The string does not contain \"1+1\"" << std::endl;
-               }
+
             std::cout << message << std::endl;
         }
     }

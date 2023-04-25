@@ -12,9 +12,9 @@ Client::Client()
         zmq::message_t * msg = new zmq::message_t();
         while( PushSocket->connected() )
         {
-            std::string Formule = "1+1";
-            // std::cout << "Geef de gewenste formule in: ";
-            // fgets(Formule, 100, stdin);
+            std::string Formule;
+            std::cout << "Geef de gewenste formule in: ";
+            std::cin >> Formule;
 
             std::string Full_Send = PushTopic + Formule;
             system("pause");

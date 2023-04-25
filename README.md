@@ -7,7 +7,7 @@ This project is a ZMQ service, which is a calculator that exists out of a servic
 The diagram below will explain more how the communication works.
 
 ## Diagram
-![Diagram](C:\Users\natha\Desktop\S2\Netwerk_Programming\1_Taken\FlowCharts\ZMQ.png)
+![Diagram](./Pictures/ZMQ.png)
 
 Both the service and client communicate over ZMQ with the Benthernet broker.
 

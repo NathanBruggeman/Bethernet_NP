@@ -28,7 +28,7 @@ The client sees that there is an answer on his subscribed topic and the broker n
 The client needs to also extract the answer from the recieved string and prints it in the terminal.
 
 ## How to interact with the Server
-To interact with the server push your formula existing of `+` `-` `*` `/` and the numbers you want to `Nathan>service?>`.
+To interact with the server, push your formula existing of `+` `-` `*` `/` and the numbers you want to `Nathan>service?>`.
 
 Example: `Nathan>service?>1+2*3/4`.
 

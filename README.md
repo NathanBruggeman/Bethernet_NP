@@ -9,7 +9,7 @@ The diagram below will explain more how the communication works.
 ## Diagram
 ![Diagram](./Pictures/ZMQ.png)
 
-Both the service and client communicate over ZMQ with the Benthernet broker. No API is used.
+Both the service and client communicate over ZMQ with the Benthernet broker. No API is used. I am willing to use it further on.
 
 # How it works
 When the service and client are both started the client will ask for the formula you want to calculate. Give in the desired formula and press `Enter`. When `Enter` is pressed it will ask to press any other key to validate it's the right formula. 

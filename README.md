@@ -30,7 +30,7 @@ The client needs to also extract the answer from the recieved string and prints 
 ## How to interact with the Server
 To interact with the server, push your formula existing of `+` `-` `*` `/` and the numbers you want to `Nathan>service?>`.
 
-Example: `Nathan>service?>1+2*3/4`.
+Example: `Nathan>service?>1+2*3/4`. (For now it doesn't work, only `+` will work, it will work when I use an API).
 
 You can do a single formula or combine some of the formula characters in one big formula.
 

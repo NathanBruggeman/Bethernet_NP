@@ -28,6 +28,6 @@ Client::Client()
     }
     catch (zmq::error_t &ex)
     {
-        std::cerr << "Caught an exception 1 : " << ex.what();
+        std::cerr << "Uitzondering gevonden 1 : " << ex.what();
     }
 }

@@ -8,9 +8,12 @@
 
 #include "service.h"
 
-int main(void)
+int main(int argc, char *argv[])
 {
-    service service;
+    QCoreApplication a(argc, argv);
 
-    return 0;
+    service service;
+    service.getQuestion();
+
+    return a.exec();
 }

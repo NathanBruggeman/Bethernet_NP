@@ -13,3 +13,6 @@ SOURCES += main.cpp \
 
 HEADERS += \
     service.h
+
+QT += network
+QT += widgets

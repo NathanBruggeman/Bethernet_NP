@@ -131,6 +131,6 @@ void service::generateRandomNum()
     }
     catch (zmq::error_t &ex)
     {
-        std::cerr << "Uitzondering gevonden : " << ex.what();
+        std::cerr << "Uitzondering gevonden : " << ex.what(); //
     }
 }

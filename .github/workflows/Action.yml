@@ -31,8 +31,8 @@ jobs:
       uses: jurplel/install-qt-action@v3
     - name: Run qmake
       run: |
-        mkdir src/build && cd src/build
-        qmake -o Makefile Source_Code/Client/Client.pro
+        mkdir Source_Code/build && cd Source_Code/build
+        qmake -o Makefile ../Source_Code/Client/Client.pro
     - name: Run make
       run: cd src/build && make
     - uses: actions/upload-artifact@v3

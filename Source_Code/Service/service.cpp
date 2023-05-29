@@ -31,7 +31,7 @@ void service::getQuestion()
             // kijken welke topic
             QString messageQstring = message.c_str();
             const QStringList parsedBuffer = messageQstring.split(">");
-            const QString topic = parsedBuffer.value(2);
+            const QString topic = parsedBuffer.value(3);   // edit
 
             if (topic == "calculator")
             {
@@ -44,7 +44,7 @@ void service::getQuestion()
 
             else if (topic == "randomnumber")
             {
-                generateRandomNum();
+                generateRandomNum(userId);
             }
         }
     }
@@ -55,7 +55,7 @@ void service::getQuestion()
     }
 }
 
-void service::makeHttpRequest(QString Formula)
+void service::makeHttpRequest(QString Formula, QString userId)
 {
     qInfo() << "Formule =" << Formula;
 
@@ -79,7 +79,7 @@ void service::makeHttpRequest(QString Formula)
         //networkManager->deleteLater();
 
         // terugsturen naar Client
-        QString messageToClient = PushTopicCalculator.c_str() + responseData;
+        QString messageToClient = userId + PushTopicCalculator.c_str() + responseData;     // edit ID
         pushSocket->send(messageToClient.toStdString().c_str(), messageToClient.length());
 
         std::ofstream outputFile("Formules_en_Antwoorden.csv", std::ios::app);
@@ -98,7 +98,7 @@ void service::makeHttpRequest(QString Formula)
         getQuestion(); });
 }
 
-void service::generateRandomNum()
+void service::generateRandomNum(QString userId)
 {
     try
     {
@@ -119,7 +119,7 @@ void service::generateRandomNum()
                 outputFile << randomNumber << std::endl;
 
             // terugsturen naar Client
-            QString messageToClient = PushTopicRandomNumber.c_str(); //+ randomNumber
+            QString messageToClient = userId + PushTopicRandomNumber.c_str(); // + ID
             messageToClient.append(std::to_string(randomNumber).c_str());
             std::cout << messageToClient.toStdString() << std::endl;
             std::cout << "Gegenereerd random getal = " << randomNumber << std::endl;

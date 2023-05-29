@@ -9,6 +9,12 @@ Client::Client()
     subscribeSocket->setsockopt(ZMQ_SUBSCRIBE, subscribeTopicCalculator.c_str(), subscribeTopicCalculator.length());
     subscribeSocket->setsockopt(ZMQ_SUBSCRIBE, subscribeTopicRandomNumber.c_str(), subscribeTopicRandomNumber.length());
 
+        uniqueID = std::to_string((rand() % 100000)+1);
+        subscribeTopicCalculator.append(uniqueID + ">");
+        pushTopicCalculator.append(uniqueID + ">");
+        subscribeTopicRandomNumber.append(uniqueID + ">");
+        pushTopicRandomNumber.append(uniqueID + ">");
+
     try
     {
         zmq::message_t *msg = new zmq::message_t();

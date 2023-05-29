@@ -38,9 +38,9 @@ public:
         return SubscribeTopicRandomNumber;
     }
 
-    void makeHttpRequest(QString Formule);
+    void makeHttpRequest(QString Formule, QString userId);
     void getQuestion();
-    void generateRandomNum();
+    void generateRandomNum(QString userId);
 
 private:
     std::string SubscribeTopicCalculator = "Nathan>service?>calculator>";

@@ -21,21 +21,31 @@ class service
 {
 public:
     service();
-    std::string GetPushTopic(void)
+    std::string GetPushTopicCalculator(void)
     {
-        return PushTopic;
+        return PushTopicCalculator;
     }
-    std::string GetSubTopic(void)
+    std::string GetSubTopicCalculator(void)
     {
-        return SubscribeTopic;
+        return SubscribeTopicCalculator;
+    }
+    std::string GetPushTopicRandomNumber(void)
+    {
+        return PushTopicRandomNumber;
+    }
+    std::string GetSubTopicRandomnumber(void)
+    {
+        return SubscribeTopicRandomNumber;
     }
 
     void makeHttpRequest(QString Formule);
     void getQuestion();
 
 private:
-    std::string SubscribeTopic = "Nathan>service?>";
-    std::string PushTopic = "Nathan>service!>";
+    std::string SubscribeTopicCalculator = "Nathan>service?>calculator>";
+    std::string PushTopicCalculator = "Nathan>service!>calculator>";
+    std::string SubscribeTopicRandomNumber = "Nathan>service?>randomnumber>";
+    std::string PushTopicRandomNumber = "Nathan>service!>randomnumber>";
     zmq::context_t *context = new zmq::context_t(1);
     zmq::message_t *zmqBuffer = new zmq::message_t();
     zmq::socket_t *pushSocket = new zmq::socket_t(*context, ZMQ_PUSH);

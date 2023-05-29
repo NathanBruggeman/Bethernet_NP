@@ -4,30 +4,55 @@
 
 Client::Client()
 {
-    PushSocket->connect("tcp://benternet.pxl-ea-ict.be:24041");
-    SubscribeSocket->connect("tcp://benternet.pxl-ea-ict.be:24042");
-    SubscribeSocket->setsockopt(ZMQ_SUBSCRIBE, SubscribeTopic.c_str(), SubscribeTopic.length());
+    pushSocket->connect("tcp://benternet.pxl-ea-ict.be:24041");
+    subscribeSocket->connect("tcp://benternet.pxl-ea-ict.be:24042");
+    subscribeSocket->setsockopt(ZMQ_SUBSCRIBE, subscribeTopicCalculator.c_str(), subscribeTopicCalculator.length());
+    subscribeSocket->setsockopt(ZMQ_SUBSCRIBE, subscribeTopicRandomNumber.c_str(), subscribeTopicRandomNumber.length());
 
     try
     {
         zmq::message_t *msg = new zmq::message_t();
-        while (PushSocket->connected())
+        while (pushSocket->connected())
         {
-            std::string Formule;
-            std::cout << "Geef de gewenste formule in: ";
-            std::cin >> Formule;
+            int choice;
+            std::cout << "Je kan een formule sturen of random getal genereren." << std::endl;
+            std::cout << "Welke service wil je gebruiken?" << std::endl;
+            std::cout << "Geef 1 in voor de calculator en 2 voor de nummer generator: ";
+            std::cin  >> choice;
+            if(choice != 1 && choice != 2){
+                std::cout << "Geen geldige keuze!" << std::endl;
+                std::cout << "Geef 1 in voor de calculator en 2 voor de nummer generator: ";
+                std::cin  >> choice;
+            }
 
-            std::string Full_Send = PushTopic + Formule;
+            if(choice == 1){
+
+            std::string Formula;
+            std::cout << "Geef de gewenste formule in: ";
+            std::cin >> Formula;
+
+            std::string fullSend = pushTopicCalculator + Formula;
             system("pause");
-            PushSocket->send(Full_Send.c_str(), Full_Send.length());
-            std::cout << "Pushed : [ping]" << std::endl;
-            SubscribeSocket->recv(msg);
+            pushSocket->send(fullSend.c_str(), fullSend.length());
+            subscribeSocket->recv(msg);
             std::string message((char *)msg->data(), msg->size());
-            std::cout << message << std::endl;
+            std::string output = message.substr(subscribeTopicCalculator.length()); // Parsing
+            std::cout << "Antwoord:" << output << std::endl;
+            }
+
+            else if(choice == 2){
+
+                std::string fullSend = pushTopicRandomNumber;
+                system("pause");
+                pushSocket->send(fullSend.c_str(), fullSend.length());
+                subscribeSocket->recv(msg);
+                std::string message((char *)msg->data(), msg->size());
+                std::string output = message.substr(subscribeTopicRandomNumber.length()); // Parsing
+            }
         }
     }
     catch (zmq::error_t &ex)
     {
-        std::cerr << "Uitzondering gevonden 1 : " << ex.what();
+        std::cerr << "Uitzondering gevonden: " << ex.what();
     }
 }

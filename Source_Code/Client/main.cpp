@@ -13,6 +13,8 @@
 
 int main(void)
 {
+    // Initialiseren van de random seed
+        std::srand(static_cast<unsigned int>(std::time(nullptr)));
     Client client;
     return 0;
 }

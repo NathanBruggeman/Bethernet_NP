@@ -17,11 +17,13 @@ public:
     Client();
 
 private:
-    std::string SubscribeTopic = "Nathan>service!>";
-    std::string PushTopic = "Nathan>service?>";
+    std::string subscribeTopicCalculator = "Nathan>service!>calculator>";
+    std::string pushTopicCalculator = "Nathan>service?>calculator>";
+    std::string subscribeTopicRandomNumber = "Nathan>service!>randomnumber>";
+    std::string pushTopicRandomNumber = "Nathan>service?>randomnumber>";
     zmq::context_t *context = new zmq::context_t(1);
-    zmq::socket_t *PushSocket = new zmq::socket_t(*context, ZMQ_PUSH);
-    zmq::socket_t *SubscribeSocket = new zmq::socket_t(*context, ZMQ_SUB);
+    zmq::socket_t *pushSocket = new zmq::socket_t(*context, ZMQ_PUSH);
+    zmq::socket_t *subscribeSocket = new zmq::socket_t(*context, ZMQ_SUB);
 };
 
 #endif // CLIENT_H

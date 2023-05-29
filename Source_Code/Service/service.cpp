@@ -2,33 +2,7 @@
 #include <iostream>
 #include <string>
 
-void service::makeHttpRequest(QString Formule)
-{
-    qInfo() << "Formule =" << Formule;
-
-    QString Buffer = "https://api.mathjs.org/v4/?expr=";
-    Buffer += QUrl::toPercentEncoding( Formule );
-    QUrl url(Buffer);
-    qInfo() << url;
-    QNetworkRequest request(url);
-
-    QNetworkReply* reply = networkManager->get(request);
-
-    QObject::connect(reply, &QNetworkReply::finished, [=]() {
-        QByteArray responseData = reply->readAll();
-
-        qInfo() << "Answer =" << responseData;
-        // Do something with responseData
-        reply->deleteLater();
-        //networkManager->deleteLater();
-
-        // terugsturen naar Client
-        QString Message_To_Client = PushTopicCalculator.c_str() + responseData;
-        pushSocket->send(Message_To_Client.toStdString().c_str(), Message_To_Client.length());
-
-        getQuestion();
-    });
-}
+#include <fstream> // For file handling
 
 service::service()
 {
@@ -54,40 +28,105 @@ void service::getQuestion()
             subSocket->recv(zmqBuffer);
             std::string message((char *)zmqBuffer->data(), zmqBuffer->size());
 
-            // logic
-            std::string Buffer = GetPushTopicCalculator();
-            std::string output = message.substr(SubscribeTopicCalculator.length()); //message.find(">", SubscribeTopic.length()));
-            // std::cout << output << std::endl;
+            // kijken welke topic
+            QString messageQstring = message.c_str();
+            const QStringList parsedBuffer = messageQstring.split(">");
+            const QString topic = parsedBuffer.value(2);
 
-            makeHttpRequest (output.c_str());
-            /* extract numbers and symbol from input string
-            // int num1 = stoi(output.substr(0, output.find("+")));
-            // int num2 = stoi(output.substr(output.find("+") + 1, output.length()));
-            // char symbol = '+';
+            if (topic == "calculator")
+            {
+                // logic
+                std::string Buffer = GetPushTopicCalculator();
+                std::string output = message.substr(SubscribeTopicCalculator.length()); // message.find(">", SubscribeTopic.length()));
 
-            // perform arithmetic operation based on symbol
-            // int result = 0;
-            // switch (symbol) {
-            //    case '+':
-            //        result = num1 + num2;
-            //        break;
-            //    case '-':
-            //        result = num1 - num2;
-            //        break;
-            //    case '*':
-            //        result = num1 * num2;
-            //        break;
-            //    case '/':
-            //        result = num1 / num2;
-            //        break;
-            //   default:
-            //        std::cout << "Ongeldige bewerking." << std::endl;
-            // }
+                makeHttpRequest(output.c_str());
+            }
 
-            // Buffer.append(std::to_string(result));
-            // pushSocket->send(Buffer.c_str(), Buffer.length());
+            else if (topic == "randomnumber")
+            {
+                generateRandomNum();
+            }
+        }
+    }
 
-           // std::cout << output << std::endl; */
+    catch (zmq::error_t &ex)
+    {
+        std::cerr << "Uitzondering gevonden : " << ex.what();
+    }
+}
+
+void service::makeHttpRequest(QString Formula)
+{
+    qInfo() << "Formule =" << Formula;
+
+    QString Buffer = "https://api.mathjs.org/v4/?expr=";
+    Buffer += QUrl::toPercentEncoding(Formula);
+    QUrl url(Buffer);
+    qInfo() << url;
+    QNetworkRequest request(url);
+
+    QNetworkReply *reply = networkManager->get(request);
+
+    QObject::connect(reply, &QNetworkReply::finished, [=]()
+                     {
+        QByteArray responseData = reply->readAll();
+
+        std::cout << std::endl;
+        qInfo() << "Answer =" << responseData;
+        std::cout << std::endl;
+        // Do something with responseData
+        reply->deleteLater();
+        //networkManager->deleteLater();
+
+        // terugsturen naar Client
+        QString messageToClient = PushTopicCalculator.c_str() + responseData;
+        pushSocket->send(messageToClient.toStdString().c_str(), messageToClient.length());
+
+        std::ofstream outputFile("Formules_en_Antwoorden.csv", std::ios::app);
+
+            // kijk of file geopend is
+            if (!outputFile) {
+                std::cerr << "Error bij het openen van de file." << std::endl;
+            }
+
+            // schrijf de formule in de file
+            outputFile << Formula.toStdString() << std::endl;
+            outputFile << responseData.toStdString() << std::endl;
+
+            std::cout << "Random Number gesaved in random_numbers.csv" << std::endl;
+
+        getQuestion(); });
+}
+
+void service::generateRandomNum()
+{
+    try
+    {
+        if (subSocket->connected())
+        {
+
+            // maak random number
+            int randomNumber = std::rand() % 101; // Generate a random number between 0 and 100
+
+            std::ofstream outputFile("random_numbers.csv", std::ios::app);
+
+                // kijk of de file geopend is
+                if (!outputFile) {
+                    std::cerr << "Error bij het openen van de file." << std::endl;
+                }
+
+                // schrijf het random getal in de file
+                outputFile << randomNumber << std::endl;
+
+            // terugsturen naar Client
+            QString messageToClient = PushTopicRandomNumber.c_str(); //+ randomNumber
+            messageToClient.append(std::to_string(randomNumber).c_str());
+            std::cout << messageToClient.toStdString() << std::endl;
+            std::cout << "Gegenereerd random getal = " << randomNumber << std::endl;
+            std::cout << std::endl;
+            pushSocket->send(messageToClient.toStdString().c_str(), messageToClient.length());
+            std::cout << "Random Number gesaved in random_numbers.csv" << std::endl;
+            getQuestion();
         }
     }
     catch (zmq::error_t &ex)

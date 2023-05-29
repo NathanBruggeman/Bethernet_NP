@@ -40,6 +40,7 @@ public:
 
     void makeHttpRequest(QString Formule);
     void getQuestion();
+    void generateRandomNum();
 
 private:
     std::string SubscribeTopicCalculator = "Nathan>service?>calculator>";
@@ -50,7 +51,7 @@ private:
     zmq::message_t *zmqBuffer = new zmq::message_t();
     zmq::socket_t *pushSocket = new zmq::socket_t(*context, ZMQ_PUSH);
     zmq::socket_t *subSocket = new zmq::socket_t(*context, ZMQ_SUB);
-    QNetworkAccessManager* networkManager;
+    QNetworkAccessManager *networkManager;
     /* zmq::context_t *context = new zmq::context_t(1);
     zmq::socket_t *socket = new zmq::socket_t ( *context, ZMQ_SUB );
     zmq::socket_t *Push = new zmq::socket_t ( *context, ZMQ_PUSH ); */

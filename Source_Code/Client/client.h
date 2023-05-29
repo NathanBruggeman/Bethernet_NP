@@ -25,7 +25,7 @@ private:
     zmq::socket_t *pushSocket = new zmq::socket_t(*context, ZMQ_PUSH);
     zmq::socket_t *subscribeSocket = new zmq::socket_t(*context, ZMQ_SUB);
 
-    std::string uniqueID;
+    std::string ID;
 };
 
 #endif // CLIENT_H

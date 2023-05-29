@@ -4,16 +4,17 @@
 
 Client::Client()
 {
+
+    ID = std::to_string((rand() % 100000)+1);
+    subscribeTopicCalculator.append(ID + ">");
+    pushTopicCalculator.append(ID + ">");
+    subscribeTopicRandomNumber.append(ID + ">");
+    pushTopicRandomNumber.append(ID + ">");
+
     pushSocket->connect("tcp://benternet.pxl-ea-ict.be:24041");
     subscribeSocket->connect("tcp://benternet.pxl-ea-ict.be:24042");
     subscribeSocket->setsockopt(ZMQ_SUBSCRIBE, subscribeTopicCalculator.c_str(), subscribeTopicCalculator.length());
     subscribeSocket->setsockopt(ZMQ_SUBSCRIBE, subscribeTopicRandomNumber.c_str(), subscribeTopicRandomNumber.length());
-
-        uniqueID = std::to_string((rand() % 100000)+1);
-        subscribeTopicCalculator.append(uniqueID + ">");
-        pushTopicCalculator.append(uniqueID + ">");
-        subscribeTopicRandomNumber.append(uniqueID + ">");
-        pushTopicRandomNumber.append(uniqueID + ">");
 
     try
     {

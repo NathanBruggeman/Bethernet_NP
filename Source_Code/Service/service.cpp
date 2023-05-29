@@ -31,15 +31,16 @@ void service::getQuestion()
             // kijken welke topic
             QString messageQstring = message.c_str();
             const QStringList parsedBuffer = messageQstring.split(">");
-            const QString topic = parsedBuffer.value(3);   // edit
+            const QString topic = parsedBuffer.value(2);
+            const QString userId = parsedBuffer.value(3);
 
             if (topic == "calculator")
             {
                 // logic
-                std::string Buffer = GetPushTopicCalculator();
-                std::string output = message.substr(SubscribeTopicCalculator.length()); // message.find(">", SubscribeTopic.length()));
+                std::string Buffer = GetPushTopicCalculator() + userId.toStdString();
+                std::string output = message.substr(Buffer.length() + 1); // message.find( ">", SubscribeTopic.length()));
 
-                makeHttpRequest(output.c_str());
+                makeHttpRequest(output.c_str(), userId);
             }
 
             else if (topic == "randomnumber")
@@ -79,7 +80,9 @@ void service::makeHttpRequest(QString Formula, QString userId)
         //networkManager->deleteLater();
 
         // terugsturen naar Client
-        QString messageToClient = userId + PushTopicCalculator.c_str() + responseData;     // edit ID
+        QString messageToClient = PushTopicCalculator.c_str() + userId + ">" + responseData;
+        std::cout << userId.toStdString() << std::endl;
+        std::cout << messageToClient.toStdString() << std::endl; // edit ID
         pushSocket->send(messageToClient.toStdString().c_str(), messageToClient.length());
 
         std::ofstream outputFile("Formules_en_Antwoorden.csv", std::ios::app);
@@ -119,7 +122,7 @@ void service::generateRandomNum(QString userId)
                 outputFile << randomNumber << std::endl;
 
             // terugsturen naar Client
-            QString messageToClient = userId + PushTopicRandomNumber.c_str(); // + ID
+            QString messageToClient = PushTopicRandomNumber.c_str() + userId + ">"; // + ID
             messageToClient.append(std::to_string(randomNumber).c_str());
             std::cout << messageToClient.toStdString() << std::endl;
             std::cout << "Gegenereerd random getal = " << randomNumber << std::endl;

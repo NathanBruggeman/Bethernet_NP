@@ -1,0 +1,41 @@
+name: Build Client
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - 'Source_Code/Client/*.cpp'
+      - 'Source_Code/Service/*.h'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build libzmq & cppzmq
+      run: |
+        mkdir libs && cd libs
+        git clone https://github.com/zeromq/libzmq.git && git clone https://github.com/zeromq/cppzmq.git
+        cd libzmq
+        mkdir build
+        cd build
+        cmake ..
+        sudo make -j4 install
+        cd ../../
+        cd cppzmq
+        mkdir build
+        cd build
+        cmake ..
+        sudo make -j4 install
+        cd
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+    - name: Run qmake
+      run: |
+        mkdir src/build && cd src/build
+        qmake -o Makefile ../Source_Code/Client.pro
+    - name: Run make
+      run: cd src/build && make
+    - uses: actions/upload-artifact@v3
+      with:
+        name: my-artifact
+        path: src/build/benternet_client

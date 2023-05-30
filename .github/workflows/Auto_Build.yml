@@ -5,7 +5,7 @@ on:
       - "main"
     paths:
       - 'Source_Code/Client/*.cpp'
-      - 'Source_Code/Service/*.h'
+      - 'Source_Code/Client/*.h'
 jobs:
   build:
     runs-on: ubuntu-latest

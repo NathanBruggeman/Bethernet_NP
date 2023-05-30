@@ -27,6 +27,28 @@ jobs:
         cmake ..
         sudo make -j4 install
         cd
+    - name: change .pro file
+      run: | 
+        echo "TEMPLATE = app
+        CONFIG += console c++11
+        CONFIG -= app_bundle
+        CONFIG -= qt
+
+        DEFINES += ZMQ_STATIC
+
+        # Default rules for deployment.
+        qnx: target.path = /tmp/\$\${TARGET}/bin
+        else: unix:!android: target.path = /opt/\$\${TARGET}/bin
+        !isEmpty(target.path): INSTALLS += target
+
+        CONFIG += link_pkgconfig
+        PKGCONFIG += cppzmq
+
+        SOURCES += main.cpp \\
+        client.cpp
+
+        HEADERS += \\
+        client.h" > Client.pro
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
     - name: Run qmake

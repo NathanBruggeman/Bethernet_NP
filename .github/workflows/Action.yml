@@ -32,7 +32,7 @@ jobs:
     - name: Run qmake
       run: |
         mkdir Source_Code/build && cd Source_Code/build
-        qmake -o Makefile ../Source_Code/Client/Client.pro
+        qmake -o Makefile ../Client/Client.pro
     - name: Run make
       run: cd src/build && make
     - uses: actions/upload-artifact@v3

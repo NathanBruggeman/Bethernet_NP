@@ -68,7 +68,7 @@ void service::makeHttpRequest(QString Formula, QString userId)
 
     QNetworkReply *reply = networkManager->get(request);
 
-    QObject::connect(reply, &QNetworkReply::finished, [=]()
+    QObject::connect(reply, &QNetworkReply::finished, [=]() // connect finished signaal aan lambda functie
                      {
         QByteArray responseData = reply->readAll();
 

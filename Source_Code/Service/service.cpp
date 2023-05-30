@@ -1,4 +1,4 @@
-#include "service.h" //
+#include "service.h"
 #include <iostream>
 #include <string>
 

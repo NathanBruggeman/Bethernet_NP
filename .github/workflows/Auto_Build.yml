@@ -34,7 +34,7 @@ jobs:
         mkdir Source_Code/build && cd Source_Code/build
         qmake -o Makefile ../Client/Client.pro
     - name: Run make
-      run: cd src/build && make
+      run: cd Source_Code/build && make
     - uses: actions/upload-artifact@v3
       with:
         name: my-artifact

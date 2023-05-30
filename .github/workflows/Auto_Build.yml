@@ -29,6 +29,7 @@ jobs:
         cd
     - name: change .pro file
       run: | 
+        cd Source_Code/Client
         echo "TEMPLATE = app
         CONFIG += console c++11
         CONFIG -= app_bundle
